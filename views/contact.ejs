@@ -1,0 +1,52 @@
+<%- include('partials/headercontact.ejs')-%>
+
+
+
+
+
+<header>Contact Us</header>
+
+<!-- Popup notification -->
+<% if (success) { %>
+    <div id="popup" class="popup">
+        Email sent successfully!
+    </div>
+<% } %>
+
+<form id="form" class="topBefore" action="contact-via-email" method="post">
+		
+		  <input id="name" type="text" placeholder="NAME" name="name">
+		  <input id="email" type="text" placeholder="E-MAIL" name="email">
+		  <textarea id="message" type="text" placeholder="MESSAGE" name="message"></textarea>
+  		  <input id="submit" type="submit" value="GO!">
+  
+</form>
+
+<%- include('partials/footer.ejs') -%>
+
+<style>
+    .popup {
+        /* position: fixed; */
+        top: 20px;
+		margin-left: 42.5%;
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        z-index: 1000;
+		width: 200px;
+		text-align: center;
+    }
+</style>
+
+<script>
+    // Automatically hide popup after 3 seconds
+    document.addEventListener("DOMContentLoaded", function() {
+        const popup = document.getElementById("popup");
+        if (popup) {
+            setTimeout(() => {
+                popup.style.display = "none";
+            }, 3000);
+        }
+    });
+</script>

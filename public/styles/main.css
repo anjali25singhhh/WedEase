@@ -1,0 +1,238 @@
+@import url("https://fonts.googleapis.com/css?family=Luckiest+Guy");
+@import url('https://fonts.googleapis.com/css2?family=Edu+QLD+Beginner:wght@400..700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Rubik+One');
+/* BODY */
+/* BODY */
+body {
+  margin: 0; /* Remove default body margin */
+  padding: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-color: skyblue;
+  background-image: -webkit-linear-gradient(90deg, skyblue 0%, steelblue 100%);
+  background-attachment: fixed;
+  background-size: 100% 100%;
+  overflow: hidden;
+  font-family: "Luckiest Guy", cursive;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 1s ease; /* To transition the background smoothly */
+}
+
+/* NAVIGATION BAR */
+nav {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  padding: 15px;
+  margin: 0; /* Remove default margin from the nav bar */
+  top: 0; /* Ensure the nav bar sticks to the top */
+  width: 100%; /* Ensure the nav bar takes full width */
+  position: relative; /* Adjust positioning */
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+nav ul li {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  font-size: 20px;
+  color: black;
+  font-family: "Luckiest Guy", cursive;
+}
+
+nav ul li a:hover {
+  color: steelblue;
+}
+
+
+/* JUMP (BOUNCE) ANIMATION */
+h1 {
+  cursor: default;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  margin: auto;
+  text-align: center;
+}
+
+h1 span {
+  position: relative;
+  top: 20px;
+  display: inline-block;
+  -webkit-animation: bounce 0.3s ease infinite alternate;
+  font-size: 80px;
+  color: #fff;
+  text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc,
+    0 5px 0 #ccc, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
+    0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.4);
+}
+
+h1 span:nth-child(2) {
+  -webkit-animation-delay: 0.1s;
+}
+
+h1 span:nth-child(3) {
+  -webkit-animation-delay: 0.2s;
+}
+
+h1 span:nth-child(4) {
+  -webkit-animation-delay: 0.3s;
+}
+
+h1 span:nth-child(5) {
+  -webkit-animation-delay: 0.4s;
+}
+
+h1 span:nth-child(6) {
+  -webkit-animation-delay: 0.5s;
+}
+
+h1 span:nth-child(7) {
+  -webkit-animation-delay: 0.6s;
+}
+
+h1 span:nth-child(8) {
+  -webkit-animation-delay: 0.2s;
+}
+
+h1 span:nth-child(9) {
+  -webkit-animation-delay: 0.3s;
+}
+
+h1 span:nth-child(10) {
+  -webkit-animation-delay: 0.4s;
+}
+
+h1 span:nth-child(11) {
+  -webkit-animation-delay: 0.5s;
+}
+
+h1 span:nth-child(12) {
+  -webkit-animation-delay: 0.6s;
+}
+
+h1 span:nth-child(13) {
+  -webkit-animation-delay: 0.7s;
+}
+
+h1 span:nth-child(14) {
+  -webkit-animation-delay: 0.8s;
+}
+
+@-webkit-keyframes bounce {
+  100% {
+    top: -20px;
+    text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc,
+      0 5px 0 #ccc, 0 6px 0 #ccc, 0 7px 0 #ccc, 0 8px 0 #ccc, 0 9px 0 #ccc,
+      0 50px 25px rgba(0, 0, 0, 0.2);
+  }
+}
+
+
+nav {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  padding: 15px;
+  margin: 0;
+  top: 0;
+  width: 100%;
+  position: fixed; /* This will keep the navbar fixed at the top */
+  z-index: 1000;  /* Ensures the nav stays on top */
+}
+
+@import 'https://fonts.googleapis.com/css?family=Rubik+One';
+.button::after, .button::before {
+  position: absolute;
+  content: "";
+  transition: all 0.5s;
+}
+
+.button {
+  display: inline-block;
+  padding: 20px 40px;
+  color: white;
+  position: absolute;
+  top: 85%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  vertical-align: middle;
+  font-family: 'Rubik One', sans-serif;
+  text-decoration: none;
+  font-size: 1.8rem;
+  transition: all 0.5s;
+  background-color: #3498db;
+  /* font-weight: bold; */
+}
+.button::before {
+  bottom: -15px;
+  height: 15px;
+  width: 100%;
+  left: 8px;
+  transform: skewX(45deg);
+  background-color: #196090;
+}
+.button::after {
+  right: -15px;
+  height: 100%;
+  width: 15px;
+  bottom: -8px;
+  transform: skewY(45deg);
+  background-color: #124364;
+}
+.button:active {
+  margin-left: 10px;
+  margin-top: 10px;
+}
+.button:active::before {
+  bottom: -5px;
+  height: 5px;
+  left: 3px;
+}
+.button:active::after {
+  right: -5px;
+  width: 5px;
+  bottom: -3px;
+}
+
+/*home*/
+
+
+
+.home-logo {
+  width: 200px;
+  height: auto;
+  margin-left: 44%;
+  margin-top: 3%;
+  border-radius: 25px;
+  border: 3.5px solid white;
+  animation: flipimg 5s infinite;
+  transform-origin: center;
+  perspective: 1000px; /* Adjust the perspective for a more 3D effect */
+}
+
+@keyframes flipimg {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}

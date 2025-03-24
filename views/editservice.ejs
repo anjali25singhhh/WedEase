@@ -1,0 +1,26 @@
+<%- include('partials/headercontact.ejs'); %>
+
+<h1 style="text-align: center; color: black;">Edit Service</h1>
+
+<form action="/edit-service/<%= service.id %>" method="POST">
+    <div>
+        <label for="service_type">Service Type</label>
+        <input type="text" id="service_type" name="service_type" value="<%= service.service_type %>" disabled>
+    </div>
+    <div>
+        <label for="description">Description</label>
+        <textarea id="description" name="description" required><%= service.description %></textarea>
+    </div>
+    <div>
+        <label for="price">Price</label>
+        <input type="number" id="price" name="price" value="<%= service.price %>" required>
+    </div>
+    <div>
+        <label for="location">Location</label>
+        <input type="text" id="location" name="location" value="<%= service.location %>" required>
+    </div>
+    <!-- Removed the photo upload input as you no longer need to update photos -->
+    <button type="submit">Update Service</button>
+</form>
+
+<%- include('partials/footer.ejs'); %>

@@ -1,0 +1,133 @@
+<%- include('partials/headercontact.ejs'); %>
+<h1>My Bookings</h1>
+<% if (bookings.length > 0) { %>
+    <ul>
+        <% bookings.forEach(booking => { %>
+            <li>
+                <p><strong>Username:</strong> <span class="black-text"><%= booking.username %></span></p>
+                <p><strong>Booked On:</strong> 
+                    <span class="black-text">
+                       <%= new Date(booking.booked_on).toLocaleDateString("en-US", { month: "long", day: "numeric" }) %>
+                    </span>
+                 </p>
+                <p><strong>Service ID:</strong> <span class="black-text"><%= booking.service_id %></span></p>
+                
+                <!-- Status Form -->
+                <form action="/update-status" method="POST" class="status-form">
+                    <!-- Hidden input to send booking_id -->
+                    <input type="hidden" name="booking_id" value="<%= booking.booking_id %>">
+                    
+                    <!-- Hidden input to send username -->
+                    <input type="hidden" name="username" value="<%= booking.username %>">
+                    
+                    <!-- Select for status -->
+                    <select name="status">
+                        <option value="Booking Confirmed" <% if (booking.status == 'Booking Confirmed') { %>selected<% } %>>Booking Confirmed</option>
+                        <option value="Working" <% if (booking.status == 'Working') { %>selected<% } %>>Working</option>
+                        <option value="Work Completed" <% if (booking.status == 'Work Completed') { %>selected<% } %>>Work Completed</option>
+                    </select>
+                    
+                    <!-- Button to submit the form -->
+                    <button type="submit" class="status-button">Update Status</button>
+                </form>
+            </li>
+        <% }) %>
+    </ul>
+<% } else { %>
+    <p>No bookings found.</p>
+<% } %>
+
+<%- include('partials/footer.ejs'); %>
+<style>
+    h1 {
+        text-align: center;
+        color: #4CAF50;
+        font-size: 36px;
+        margin-top: 30px;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    li {
+        background: #fff;
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+    }
+
+    li p {
+        margin: 10px 0;
+        font-size: 16px;
+        color: #555;
+        line-height: 1.5;
+    }
+
+    li p strong {
+        color: #4CAF50;
+    }
+
+    .black-text {
+        color: #000;
+    }
+
+    .no-bookings {
+        text-align: center;
+        font-size: 20px;
+        color: #888;
+        margin-top: 40px;
+    }
+
+    .status-form {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .status-form select {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 14px;
+        background-color: #f9f9f9;
+        color: #333;
+        transition: border-color 0.3s;
+    }
+
+    .status-form select:focus {
+        border-color: #4CAF50;
+        outline: none;
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.4);
+    }
+
+    .status-button {
+        background-color: #4CAF50;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .status-button:hover {
+        background-color: #45a049;
+        transform: translateY(-2px);
+    }
+
+    .status-button:active {
+        transform: translateY(0);
+    }
+
+    
+</style>

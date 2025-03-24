@@ -1,0 +1,145 @@
+<%- include('partials/headercontact.ejs'); %>
+<div class="header" style="text-align: center; ">
+    <h1 style="color: black;">Welcome to WedEase Chatbot</h1>
+</div>
+
+<!-- Chatbot Container -->
+<div class="chatbot-container">
+    <div class="chatbot-header">
+        <h2>Chat with Us</h2>
+    </div>
+    <div class="chatbot-body" id="chatbot-body" style="color: black;">
+        <!-- Default Messages Will Be Displayed Here -->
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+    // Predefined Questions and Answers
+    const predefinedQA = [
+        {
+            question: "What services do you offer?",
+            answer: "We offer a wide range of wedding-related services, including catering, venue booking, decorations, wedding photography, and more."
+        },
+        {
+            question: "How can I book a service?",
+            answer: "To book a service, simply visit the service page, select your desired service, and click on 'Book Now'. You'll be guided through the booking process."
+        },
+        {
+            question: "Do you offer budget-friendly options?",
+            answer: "Yes, we offer a variety of budget-friendly wedding packages. You can filter services based on your budget on our website."
+        },
+        {
+            question: "Can I see the available wedding venues?",
+            answer: "Yes, we have a list of venues that you can choose from. Visit the 'Venues' section to explore the options."
+        },
+        {
+            question: "How do I contact customer support?",
+            answer: "You can contact our customer support team through the 'Contact Us' page, or reach us via email at support@wedease.com."
+        }
+    ];
+
+    // Function to display predefined questions
+    window.onload = function() {
+        const chatBody = document.getElementById('chatbot-body');
+
+        predefinedQA.forEach((item, index) => {
+            // Create a clickable question
+            const questionElement = document.createElement('div');
+            questionElement.classList.add('chatbot-question');
+            questionElement.innerHTML = `<strong>Q${index + 1}:</strong> ${item.question}`;
+            questionElement.onclick = () => showAnswer(index);
+
+            // Append the question to the chat body
+            chatBody.appendChild(questionElement);
+        });
+    };
+
+    // Function to display the answer when a question is clicked
+    function showAnswer(index) {
+        const chatBody = document.getElementById('chatbot-body');
+        const answerElement = document.createElement('div');
+        answerElement.classList.add('chatbot-answer');
+        answerElement.innerHTML = `<strong>Answer:</strong> ${predefinedQA[index].answer}`;
+
+        // Append the answer after the clicked question
+        chatBody.appendChild(answerElement);
+
+        // Scroll to the bottom of the chat
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }
+</script>
+
+<%- include('partials/footer.ejs'); %>
+
+<style>
+    .chatbot-container {
+        width: 90%;
+        max-width: 500px;
+        margin: 20px auto;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .chatbot-header {
+        background-color: #5c67f2;
+        color: #fff;
+        text-align: center;
+        padding: 10px;
+        font-size: 18px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    .chatbot-body {
+        padding: 15px;
+        height: 300px;
+        overflow-y: auto;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .chatbot-footer {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+    }
+
+    .chatbot-footer input {
+        flex: 1;
+        padding: 8px;
+        margin-right: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .chatbot-footer button {
+        background-color: #5c67f2;
+        color: #fff;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .chatbot-question {
+        background-color: #f0f0f0;
+        padding: 8px;
+        margin-bottom: 5px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .chatbot-question:hover {
+        background-color: #e0e0e0;
+    }
+
+    .chatbot-answer {
+        background-color: #e0f7fa;
+        padding: 8px;
+        margin-top: 5px;
+        border-radius: 4px;
+    }
+</style>

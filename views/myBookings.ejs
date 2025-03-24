@@ -1,0 +1,103 @@
+<%- include('partials/headercontact.ejs'); %>
+
+<h1 style="text-align: center; color: #433878;">My Bookings</h1>
+
+<% if (bookings.length === 0) { %>
+    <p style="text-align: center; color: black;">You have no bookings yet!</p>
+<% } else { %>
+    <div class="bookings-container" >
+        <% bookings.forEach(booking => { %>
+            <div class="booking-item" >
+                <h2 style="color: #433878;">Booking ID: <%= booking.id %></h2>
+                <p style="color: #433878;">Total Amount: Rs <%= booking.total_amount %></p>
+                <p style="color: #433878;">Service Details:</p>
+                <ul style="color: #433878;">
+                    <% 
+                        let cartItems = booking.cart_items;
+                        if (typeof cartItems === 'string') {
+                            cartItems = JSON.parse(cartItems);  // Parse if it's a string
+                        }
+                    %>
+                    <% cartItems.forEach(item => { %>
+                        <li class="cart-item" style="color: black;">
+                            <span style="color: #433878;">Service: <%= item.service_id %></span><br>
+                            <span style="color: #433878;">Vendor: <%= item.username %></span><br>
+                            <span style="color: #433878;">Quantity: <%= item.quantity %></span><br>
+                            <span style="color: #433878;">Price: Rs <%= item.price %></span><br>
+                            <p style="color: #433878;">Booking Status: <%= booking.status %></p>
+        
+        <!-- Progress Bar -->
+                            <div class="status-bar-container">
+                                <div class="status-bar <%= getProgressBarClass(booking.status) %>"></div>
+                            </div>
+                        </li>
+                    <% }) %>
+                    
+                    
+                    
+                </ul>
+                <p style="color: #433878;">Booking Date: <%= new Date(booking.booked_on).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                <p style="color: #433878;">Payment ID: <%= booking.payment_id %></p>
+            </div>
+        <% }) %>
+    </div>
+<% } %>
+
+<%- include('partials/footer.ejs'); %>
+
+
+<style>
+    .bookings-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin: 20px;
+    }
+
+    .booking-item {
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+    .cart-item span {
+    display: block;
+    margin-bottom: 10px; /* Adjust the value to increase or decrease spacing */
+    }
+    .status-bar-container {
+        width: 30%;
+        height: 20px;
+        background-color: #e0e0e0; /* Light gray background */
+        border-radius: 10px;
+        margin-top: 5px;
+    }
+
+    .status-bar {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.3s ease;
+    }
+
+    /* Define different progress states */
+    .progress-0 {
+        width: 0%;
+        background-color: #e0e0e0; /* Gray for initial state */
+    }
+
+    .progress-33 {
+        width: 33%;
+        background-color: #ffc107; /* Yellow for booking confirmed */
+    }
+
+    .progress-66 {
+        width: 66%;
+        background-color: #17a2b8; /* Blue for working */
+    }
+
+    .progress-100 {
+        width: 100%;
+        background-color: #28a745; /* Green for completed */
+    }
+
+
+</style>
