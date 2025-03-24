@@ -1,0 +1,68 @@
+<%- include('partials/headercontact.ejs'); %>
+
+<h1 style="color: black; font-size: 4rem; text-align: center;">Welcome, <%= username %>!</h1>
+<p style="color: black; font-size: 1.8rem; text-align: center;">Your role is: <%= role %></p>
+
+<!-- Display current image based on user role -->
+<% if (userImage) { %>
+    <div style="text-align: center; margin-top: 20px;">
+        <img src="data:image/jpeg;base64,<%= userImage %>" alt="<%= role %> Image" style="width: 200px; height: 200px; border-radius: 50%;"/>
+    </div>
+<% } else { %>
+    <p style="text-align: center; font-size: 1.5rem;">No image uploaded yet</p>
+<% } %>
+
+<!-- Image upload form -->
+<form action="/upload-image" method="POST" enctype="multipart/form-data" style="text-align: center; margin-top: 30px;">
+    <!-- Hidden default file input -->
+    <input type="file" name="image" id="fileInput" accept="image/*" style="display: none;" onchange="updateFileName()" />
+
+    <!-- Custom button to trigger the file input -->
+    <button type="button" id="customFileBtn" onclick="document.getElementById('fileInput').click()" style="font-size: 1.2rem; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px;">
+        Choose Image
+    </button>
+
+    <!-- Display the selected file name -->
+    <div id="fileName" style="font-size: 1rem; margin-top: 10px;"></div>
+
+    <button type="submit" style="font-size: 1.2rem; padding: 10px 20px; margin-top: 20px; border: none; border-radius: 10px;">Upload Image</button>
+</form>
+
+
+<script>
+    function updateFileName() {
+    const fileInput = document.getElementById("fileInput");
+    const fileName = document.getElementById("fileName");
+
+    if (fileInput.files && fileInput.files[0]) {
+        fileName.textContent = `Selected file: ${fileInput.files[0].name}`;
+    }
+}
+
+</script>
+<style>
+    #customFileBtn {
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#customFileBtn:hover {
+    background-color: #0056b3;
+}
+
+#fileName {
+    font-size: 1rem;
+    margin-top: 10px;
+    color: #555;
+}
+
+</style>
+<%- include('partials/footer.ejs'); %>
+
+

@@ -1,0 +1,69 @@
+<%- include('partials/headercontact.ejs'); %>
+
+<h1 style="color: black; text-align: center;">Your Cart</h1>
+
+<% if (cartItems.length === 0) { %>
+    <p>Your cart is empty!</p>
+<% } else { %>
+    <div class="cart-items-container">
+        <% let totalAmount = 0; %> <!-- Initialize totalAmount to 0 -->
+        <% cartItems.forEach(item => { %>
+            <div class="cart-item">
+                <h2 style="color: #433878;">Service: <%= item.service_id %></h2> <!-- Display Service ID -->
+                <p style="color: #433878;">Vendor: <%= item.vendor_name %></p> <!-- Display Vendor Name -->
+                <p style="color: #433878;">Service Type: <%= item.service_type %></p> <!-- Display Service Type -->
+                <p style="color: #433878;">Price: Rs <%= item.price %></p> <!-- Display Price -->
+                <p style="color: #433878;">Quantity: <%= item.quantity %></p> <!-- Display Quantity -->
+
+                <% if (item.photo_url) { %>
+                    <img src="/<%= item.photo_url %>" alt="Service Photo" style="width: 150px; height: auto; border-radius: 10px;"/> <!-- Display the first photo -->
+                <% } else { %>
+                    <p>No image available</p> <!-- If there's no photo -->
+                <% } %>
+
+                <!-- Remove Button -->
+                <form action="/remove-from-cart/<%= item.service_id %>" method="POST" style="display: inline;">
+                    <button type="submit" style="color: red; background: none; border: none; cursor: pointer;">
+                        <img src="/asset/delete.png" alt="delete-img" width="50px" height="auto">
+                    </button>
+                </form>
+            </div>
+
+            <% totalAmount += item.price * item.quantity; %> <!-- Calculate the total amount -->
+        <% }) %>
+    </div>
+
+    <!-- Proceed to Checkout Button -->
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="/checkout" class="btn-checkout" style="padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">
+            Proceed to Checkout (Rs <%= totalAmount %>)
+        </a>
+    </div>
+<% } %>
+
+<%- include('partials/footer.ejs'); %>
+
+<style>
+    .cart-items-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .cart-item {
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    .btn-checkout {
+        font-size: 18px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+    .btn-checkout:hover {
+        background-color: #218838;
+    }
+</style>

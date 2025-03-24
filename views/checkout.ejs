@@ -1,0 +1,149 @@
+<%- include('partials/headercontact.ejs'); %>
+
+<h1 style="color: #433878; text-align: center;">Checkout</h1>
+
+<% if (cartItems.length === 0) { %>
+    <p>Your cart is empty!</p>
+<% } else { %>
+    <div class="cart-items-container">
+        <% cartItems.forEach(item => { %>
+            <div class="cart-item">
+                <h2 style="color: #433878;">Service: <%= item.service_id %></h2>
+                <p style="color: #433878;">Vendor: <%= item.username %></p>
+                <p style="color: #433878;">Service Type: <%= item.service_type %></p>
+                <p style="color: #433878;">Price: Rs <%= item.price %></p>
+                <p style="color: #433878;">Quantity: <%= item.quantity %></p>
+            </div>
+        <% }) %>
+    </div>
+
+    <h2 style="color: #433878; text-align: center;">Total Amount: Rs <%= totalAmount %></h2>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <form action="/booking" method="POST">
+            <input type="hidden" name="totalAmount" value="<%= totalAmount %>">
+            <input type="hidden" name="cartItems" value="<%= JSON.stringify(cartItems) %>" id="cart-item">
+
+            <!-- Add a Date Picker Input -->
+            <label for="bookedOn" style="color: #433878;">Select Booking Date</label>
+            <input type="date" id="bookedOn" name="bookedOn" required style="padding: 10px; border-radius: 5px; margin-top: 10px;">
+
+            <button type="submit" class="btn-checkout" style="padding: 10px 20px; background-color: #28a745; color: white; border-radius: 5px;" >
+                Complete Purchase
+            </button>
+        </form>
+    </div>
+<% } %>
+
+<%- include('partials/footer.ejs'); %>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.querySelector('.btn-checkout').addEventListener('click', async (event) => {
+        event.preventDefault();
+
+        const totalAmount = "<%= totalAmount*100 %>";
+        const cartItems = document.getElementById("cart-item").value;
+        const bookedOn = document.getElementById("bookedOn").value;
+
+        if (!bookedOn) {
+            alert("Please select a booking date!");
+            return;
+        }
+
+        try {
+            // Create order on the backend
+            const response = await fetch("/create-order", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ totalAmount }),
+            });
+
+            const data = await response.json();
+
+            if (!data.success) {
+                throw new Error("Failed to create Razorpay order");
+            }
+
+            // Open Razorpay checkout
+            const options = {
+                key: "rzp_test_ykjH2mmfVaDX96", // Replace with your Razorpay Key ID
+                amount: data.amount,
+                currency: data.currency,
+                name: "Wedease",
+                description: "Wedding Services Payment",
+                order_id: data.orderId,
+                handler: function (response) {
+                    alert(`Payment Successful! Payment ID: ${response.razorpay_payment_id}`);
+
+                    // Submit booking details to your backend
+                    fetch("/booking", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            totalAmount,
+                            cartItems,
+                            bookedOn,
+                            paymentId: response.razorpay_payment_id,
+                        }),
+                    }).then((res) => {
+                        if (res.ok) {
+                            alert("Booking confirmed!");
+                            window.location.href = "/success"; // Redirect to a success page
+                        } else {
+                            alert("Booking failed! Please contact support.");
+                        }
+                    });
+                },
+                prefill: {
+                    name: "<%= username %>", // Replace with the logged-in user's name
+                    email: "ombhayde5@gmail.com", // Replace with the user's email
+                    contact: "7224974906", // Replace with the user's contact number
+                },
+                theme: {
+                    color: "#28a745",
+                },
+            };
+
+            const razorpay = new Razorpay(options);
+            razorpay.open();
+        } catch (error) {
+            console.error(error);
+            alert("Payment failed! Please try again.");
+        }
+    });
+</script>
+
+
+
+<style>
+    .cart-items-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .cart-item {
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    .btn-checkout {
+        font-size: 18px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+    .btn-checkout:hover {
+        background-color: #218838;
+    }
+</style>
+
+
+

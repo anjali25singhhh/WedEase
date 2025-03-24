@@ -1,0 +1,215 @@
+<%-include('partials/headercontact.ejs');-%>    
+
+<!-- Error message (this will show when the item is already in the cart) -->
+<p id="cart-error-message" class="error-message" style="display: none;"></p>
+
+<!-- Success message (this will show when the item is successfully added) -->
+<p id="cart-success-message" class="success-message" style="display: none;"></p>
+
+
+<div id="cart-section" style="display: flex; align-items: center; gap: 0px; background-color: whitesmoke; width: 100px; border-radius: 10px; margin-left: 5px; margin-top: 10px;">
+    <a href="/cart/<%= userId %>"> <!-- Updated: Redirect to the cart page when clicked -->
+        <img src="/asset/cart.png" alt="cart-photo" width="60px" height="auto">
+    </a>
+    <div class="div-2">
+        <p id="cart-item-count" style="margin: 0; font-size: 20px; font-weight: bold; color: black;">0</p>
+        <ul id="cart-items-list" style="display: none; list-style: none; padding: 0; margin: 0;">
+            <!-- Cart items will be displayed here -->
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="info">
+    <h2 style="text-align: center;" >Vendor Name: <%=venue.username%></h2>
+    <h2 style="text-align: center;">Price: <%=venue.price%> Rs</h2>
+    <h2 style="text-align: center;">Location: <%=venue.location%></h2>
+</div>
+
+
+<div class="photos">
+    <% venue.photos.forEach(photo => { %>
+        <img src="/<%= photo %>" alt="Service Photo" class="service-photo">
+    <% }); %>
+</div>
+<h2 style="text-align: center;">Description</h2>
+<h3 style="color: #433878; text-align: justify;padding-left: 10px;padding-right: 10px;"><%=venue.description%></h3>
+<div class="buttons">
+    <button class="btn add-to-cart" data-id="<%= userId %>" data-service-id="<%= venue.id %>">Add to Cart</button>
+    <button class="btn buy-now">Buy Now</button>
+
+
+</div>
+
+
+<%- include('partials/footer.ejs'); %>
+
+<style>
+    /* Styling for the photos to make them look like a gallery */
+    .photos {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+    
+    .service-photo {
+        width: 100%;
+        max-width: 300px;
+        margin: 5px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    h2{
+        color: #433878;
+        font-size: 2rem;
+    }
+    .buttons {
+        margin-top: 15px;
+        text-align: center;
+    }
+
+    /* Button styling */
+    .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        cursor: pointer;
+        margin: 5px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        transition: background-color 0.3s;
+    }
+
+    .add-to-cart {
+        background-color: #28a745;
+    }
+
+    .add-to-cart:hover {
+        background-color: #218838;
+    }
+
+    .buy-now {
+        background-color: #dc3545;
+    }
+
+    .buy-now:hover {
+        background-color: #c82333;
+    }
+    .error-message {
+        color: red;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    /* Success message style */
+    .success-message {
+        color: green;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+</style>
+
+
+<script>
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function() {
+            const userId = this.getAttribute('data-id');  // Get userId from data-id attribute
+            const serviceId = this.getAttribute('data-service-id');
+
+            // Check if userId is available
+            if (!userId) {
+                console.error('User ID is missing');
+                return;
+            }
+
+            const addToCart = async (userId, quantity = 1, serviceId) => {
+                try {
+                    const response = await fetch('/add-to-cart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ userId, quantity, serviceId })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        console.log('Added to cart successfully');
+                        
+                        // Show success message for 5 seconds
+                        const successMessageElement = document.getElementById('cart-success-message');
+                        successMessageElement.textContent = "Item added to cart successfully!";
+                        successMessageElement.style.display = 'block';
+                        setTimeout(() => {
+                            successMessageElement.style.display = 'none';
+                        }, 5000);
+
+                        // Update the cart display
+                        updateCartUI(userId);
+                    } else {
+                        console.log(result.message);  // Display the error message sent from backend
+
+                        // Show error message
+                        const errorMessageElement = document.getElementById('cart-error-message');
+                        errorMessageElement.textContent = result.message;
+                        errorMessageElement.style.display = 'block';
+                        setTimeout(() => {
+                            errorMessageElement.style.display = 'none';
+                        }, 5000);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            };
+
+            // Call the addToCart function with userId and default quantity of 1
+            addToCart(userId, 1, serviceId);
+        });
+    });
+
+
+
+</script>
+<script>
+    // Function to update cart UI
+    const updateCartUI = async (userId) => {
+        try {
+            const response = await fetch(`/get-cart/${userId}`);
+            const result = await response.json();
+
+            if (result.success) {
+                const cartItems = result.cartItems;
+                const cartItemsList = document.getElementById('cart-items-list');
+                const cartItemCount = document.getElementById('cart-item-count');
+
+                // Clear previous cart items
+                cartItemsList.innerHTML = '';
+
+                // Show the number of items in the cart
+                cartItemCount.textContent = `${cartItems.length}`;
+
+                // Display cart items
+                cartItems.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = `Service ID: ${item.service_id}, Quantity: ${item.quantity}`;
+                    cartItemsList.appendChild(li);
+                });
+            } else {
+                console.error('Failed to fetch cart items');
+            }
+        } catch (error) {
+            console.error('Error fetching cart data:', error);
+        }
+    };
+
+    // Call the updateCartUI function with the userId
+    const userId = 2;  // Replace with actual user ID from the session or wherever you get it
+    updateCartUI(userId);
+
+</script>

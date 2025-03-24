@@ -1,0 +1,34 @@
+<%- include('partials/headercontact.ejs')-%>
+
+<h2>Add Your Service</h2>
+<form action="/add-service" method="POST" enctype="multipart/form-data">
+    <!-- Type of Service -->
+    <label for="serviceType">Type of Service:</label>
+    <select name="serviceType" id="serviceType" required>
+        <option value="venue">Venue</option>
+        <option value="decoration">Decoration</option>
+        <option value="catering">Catering</option>
+        <option value="photography">Photography</option>
+    </select>
+    
+    <!-- Photos Upload -->
+    <label for="photos">Upload Photos:</label>
+    <input type="file" name="photos" id="photos" accept="image/*" multiple required>
+
+    <!-- Price of Service -->
+    <label for="price">Price (in Rs):</label>
+    <input type="number" name="price" id="price" required>
+
+    <!-- Location -->
+    <label for="location">Location:</label>
+    <input type="text" name="location" id="location" required>
+
+    <!-- Description of Service -->
+    <label for="description">Description:</label>
+    <textarea name="description" id="description" rows="4" required></textarea>
+
+    <!-- Submit Button -->
+    <button type="submit">Add Service</button>
+</form>
+
+<%- include('partials/footer.ejs') -%>

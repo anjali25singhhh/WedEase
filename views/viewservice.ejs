@@ -1,0 +1,33 @@
+<%- include('partials/headercontact.ejs'); %>
+
+<h1 style="text-align: center; color: #7E60BF;">Your Added Services</h1>
+
+<% if (services.length > 0) { %>
+    <div class="services-list">
+        <% services.forEach(service => { %>
+            <div class="service-card" style="border: 1px solid black; padding: 20px; margin: 10px;">
+                <h1 style="color: #7E60BF;"><%= service.service_type.charAt(0).toUpperCase() + service.service_type.slice(1) %></h1>
+                <p style="color: #7E60BF; text-align: justify;"><%= service.description %></p>
+                <p style="color: #7E60BF;"><strong>Price:</strong> ₹<%= service.price %></p>
+                <p style="color: #7E60BF;"><strong>Location:</strong> <%= service.location %></p>
+                
+                <% if (service.photos.length > 0) { %>
+                    <div class="photos">
+                        <% service.photos.forEach(photo => { %>
+                            <img src="<%= photo %>" alt="Service Photo" style="width: 100px; height: 100px; margin-right: 10px;">
+                        <% }) %>
+                    </div>
+                <% } %>
+
+                <p style="color: #7E60BF;"><strong>Created At:</strong> <%= service.created_at %></p>
+                
+                <!-- Edit Button -->
+                <a href="/edit-service/<%= service.id %>" style="background-color: #007bff; color: white; padding: 5px 10px; border-radius: 5px;">Edit</a>
+            </div>
+        <% }) %>
+    </div>
+<% } else { %>
+    <p>No services added yet.</p>
+<% } %>
+
+<%- include('partials/footer.ejs'); %>

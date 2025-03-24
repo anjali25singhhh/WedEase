@@ -1,0 +1,8 @@
+<% var path = typeof path !== 'undefined' ? path : ''; %>
+
+    <% if (path !== "/" && path !== "/home" && path !== "/signin" && path !== "/register") { %>
+        <div class="sign-out-div">
+            <a href="/signout" class="sign-out-btn">Sign Out</a>
+        </div>
+    <% } %>
+

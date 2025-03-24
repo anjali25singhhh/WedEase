@@ -1,0 +1,39 @@
+<%- include('partials/headercontact.ejs')-%>
+<form id="budget-form">
+    <label for="min-budget">Select Your Budget:</label>
+    <input type="number" id="min-budget" name="min_budget" placeholder="Min Budget">
+    <input type="number" id="max-budget" name="max_budget" placeholder="Max Budget">
+    <button type="submit">Find Packages</button>
+</form>
+
+<div id="packages-list">
+    <!-- Packages will be dynamically loaded here -->
+</div>
+
+<script>
+    document.getElementById("budget-form").addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const minBudget = document.getElementById("min-budget").value;
+        const maxBudget = document.getElementById("max-budget").value;
+
+        const response = await fetch(`/packages?min_budget=${minBudget}&max_budget=${maxBudget}`);
+        const packages = await response.json();
+
+        const packagesList = document.getElementById("packages-list");
+        packagesList.innerHTML = "";
+
+        packages.forEach(pkg => {
+            const packageItem = document.createElement("div");
+            packageItem.innerHTML = `
+                <h3>${pkg.name}</h3>
+                <p>${pkg.description}</p>
+                <p>Budget Range: ${pkg.min_budget} - ${pkg.max_budget}</p>
+            `;
+            packagesList.appendChild(packageItem);
+        });
+    });
+</script>
+
+
+<%- include('partials/footer.ejs') -%>

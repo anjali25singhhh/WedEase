@@ -1,0 +1,63 @@
+<%- include('partials/headercontact.ejs'); %>
+
+<h1 style="color: black; text-align: center;">Book Your Service</h1>
+
+<% if (cartItems.length === 0) { %>
+    <p>Your cart is empty!</p>
+<% } else { %>
+    <div class="cart-items-container">
+        <% cartItems.forEach(item => { %>
+            <div class="cart-item">
+                <h2 style="color: black;">Service: <%= item.service_id %></h2>
+                <p style="color: black;">Vendor: <%= item.username %></p>
+                <p style="color: black;">Service Type: <%= item.service_type %></p>
+                <p style="color: black;">Price: Rs <%= item.price %></p>
+                <p style="color: black;">Quantity: <%= item.quantity %></p>
+            </div>
+        <% }) %>
+    </div>
+
+    <h2 style="color: black; text-align: center;">Total Amount: Rs <%= totalAmount %></h2>
+
+    <!-- Date Selection Form -->
+    <form action="/confirm-booking" method="POST">
+        <label for="bookingDate">Select a Date: </label>
+        <input type="date" id="bookingDate" name="booked_on" required>
+        
+        <input type="hidden" name="cartItems" value="<%= JSON.stringify(cartItems) %>">
+        <input type="hidden" name="totalAmount" value="<%= totalAmount %>">
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <button type="submit" class="btn-checkout" style="padding: 10px 20px; background-color: #28a745; color: white; border-radius: 5px;">
+                Confirm Booking
+            </button>
+        </div>
+    </form>
+<% } %>
+
+<%- include('partials/footer.ejs'); %>
+
+<style>
+    .cart-items-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .cart-item {
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    .btn-checkout {
+        font-size: 18px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+    .btn-checkout:hover {
+        background-color: #218838;
+    }
+</style>
